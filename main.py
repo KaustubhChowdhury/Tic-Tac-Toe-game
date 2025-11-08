@@ -1,34 +1,48 @@
 import pygame
-import sys
+from pygame.locals import *
 
 pygame.init()
 
-WIDTH=900
-HEIGHT=900
+screen_width = 300
+screen_height = 300
 
-SCREEN = pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption("TIC TAC TOE")
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption("Tic Tac Toe")
 
-BOARD = pygame.image.load("assets/TTT.png")
-X_IMG = pygame.image.load("assets/X1.png")
-O_IMG = pygame.image.load("assets/01.png")
 
-BG_COLOR = (214, 201, 227)
+line_width = 6
+markers = []
+clicked = False
 
-board = [[1,2,3], [4,5,6], [7,8,9]]
-graphical_board= [[[None,None], [None,None], [None,None]],
-                  [[None,None], [None,None], [None,None],],
-                  [[None,None], [None,None], [None,None]]]
+def draw_grid():
+    bg = (255,255,200)
+    grid = (50,50,50)
+    screen.fill(bg)
+    for x in range(1,3):
+        pygame.draw.line(screen, grid, (0, x*100), (screen_width, x*100), line_width)
+        pygame.draw.line(screen, grid, (x*100,0),  (x*100,screen_height), line_width)
 
-to_move = 'X'
+for x in range(3):
+    row = [0]*3
+    markers.append(row)
 
-SCREEN.fill(BG_COLOR)
-SCREEN.blit(BOARD, (64,64))
+running = True
+while running:
 
-pygame.display.update()
+    draw_grid()
 
-while True:
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+            clicked = True
+        if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+            clicked = False
+
+
+
+    pygame.display.update()
+    
+
+pygame.quit()
